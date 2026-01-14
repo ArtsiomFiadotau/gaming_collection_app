@@ -3,6 +3,7 @@ import SearchBar from '@/components/SearchBar';
 import { icons } from '@/constants/icons';
 import { images } from '@/constants/images';
 import { fetchGames } from '@/services/api';
+//import { updateSearchCount } from '@/lib/appwrite';
 import useFetch from '@/services/useFetch';
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, FlatList, Image, Text, View } from 'react-native';
@@ -22,9 +23,13 @@ const Search = () => {
   }), false)
 
   useEffect(() => {
+      
     const timeoutId = setTimeout(async () => { 
     if(searchQuery.trim()) {
         await loadGames();
+
+        if(games?.length >0 && games?.[0])
+        await updateSearchCount(searchQuery, games[0]);
       } else {
           reset()
       }
