@@ -23,7 +23,7 @@ client
 export default function Index() {
       const { user } = useAuthStore();
 
-      console.log("useAuthStore", user);
+      console.log("USER:", JSON.stringify(user, null, 2));
       const router = useRouter();
 
       const { 

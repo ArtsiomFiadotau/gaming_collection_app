@@ -15,6 +15,16 @@ interface TrendingMovie {
   poster_url: string;
 }
 
+interface GameDetails {
+  id: number;
+  summary: string | null;
+  cover_url: string | null;
+  release_date: string;
+  rating: number;
+  name: string;
+}
+
+
 interface MovieDetails {
   adult: boolean;
   backdrop_path: string | null;

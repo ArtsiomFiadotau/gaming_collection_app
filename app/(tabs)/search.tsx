@@ -5,7 +5,7 @@ import { images } from '@/constants/images';
 import { fetchGames } from '@/services/api';
 //import { updateSearchCount } from '@/lib/appwrite';
 import useFetch from '@/services/useFetch';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { ActivityIndicator, FlatList, Image, Text, View } from 'react-native';
 
 const Search = () => {
@@ -22,20 +22,20 @@ const Search = () => {
     query: searchQuery
   }), false)
 
-  useEffect(() => {
+  // useEffect(() => {
       
-    const timeoutId = setTimeout(async () => { 
-    if(searchQuery.trim()) {
-        await loadGames();
+  //   const timeoutId = setTimeout(async () => { 
+  //   if(searchQuery.trim()) {
+  //       await loadGames();
 
-        if(games?.length >0 && games?.[0])
-        await updateSearchCount(searchQuery, games[0]);
-      } else {
-          reset()
-      }
-    }, 500);
-      return () => clearTimeout(timeoutId);
-  }, [searchQuery]);
+  //       if(games?.length >0 && games?.[0])
+  //       await updateSearchCount(searchQuery, games[0]);
+  //     } else {
+  //         reset()
+  //     }
+  //   }, 500);
+  //     return () => clearTimeout(timeoutId);
+  // }, [searchQuery]);
 
   return (
     <View className="flex-1 bg-primary">

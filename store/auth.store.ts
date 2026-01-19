@@ -1,3 +1,4 @@
+import { getCurrentUser } from '@/lib/appwrite';
 import { User } from '@/types/type';
 import { create } from 'zustand';
 

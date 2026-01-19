@@ -28,6 +28,7 @@ const TabIcon = ({ focused, icon, title }: any) => {
 
 const _Layout = () => {
   const { isAuthenticated } = useAuthStore();
+  
 
   if(!isAuthenticated) return <Redirect href="/sign-in"/>
   
