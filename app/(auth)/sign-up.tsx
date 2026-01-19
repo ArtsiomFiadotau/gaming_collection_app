@@ -7,21 +7,26 @@ import { Alert, Text, View } from 'react-native';
 
 const SignUp = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [form, setForm] = useState({name: '', email: '', password: ''});
+  const [form, setForm] = useState({userName: '', email: '', password: ''});
   
   const submit = async () => {
-    const { name, email, password } = form;
+    const { userName, email, password } = form;
     
-    if(!name || !email || password) return Alert.alert('Error','Please enter valid email or password')
+    if(!userName || !email || !password) return Alert.alert('Error','Please enter valid email or password')
      
 
 
 
     setIsSubmitting(true)
 
-    try {
-      //Вызов функции регистрации Appwrite
-      await createUser({ email, password, name })
+    try  {
+          await createUser ({
+            email,
+            userName,
+            password,
+          })
+
+      Alert.alert('Success', 'User signed up successfully!');
       router.replace('/');
     } catch (error: any) {
       Alert.alert('Error', error.message);
@@ -35,8 +40,8 @@ const SignUp = () => {
     <View className="gap-10 bg-white rounded-lg p-5 mt-5">
       <CustomInput 
                 placeholder="Enter your full name"
-                value={form.name}
-                onChangeText={(text) => setForm((prev) => ({...prev, name: text}))}
+                value={form.userName}
+                onChangeText={(text) => setForm((prev) => ({...prev, userName: text}))}
                 label="Full name"
             />
     <CustomInput 

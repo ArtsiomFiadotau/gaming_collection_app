@@ -1,67 +1,50 @@
 import { CreateUserParams, SignInParams } from '@/types/type';
-import { Account, Avatars, Client, ID, TablesDB } from 'react-native-appwrite';
+import { Databases } from 'react-native-appwrite';
 
-export const appwriteConfig = {
-endpoint: process.env.EXPO_PUBLIC_APPWRITE_ENDPOINT!,
-projectId: process.env.EXPO_PUBLIC_APPWRITE_PROJECT_ID!,
-platform: "com.happycorp.gamingapp",
-databaseId: process.env.EXPO_PUBLIC_APPWRITE_DATABASE_ID!,
-userTableId: 'userid'
-}
 
-export const client = new Client();
-
-client
-    .setEndpoint(appwriteConfig.endpoint)
-    .setProject(appwriteConfig.projectId)
-    .setPlatform(appwriteConfig.platform)
-
-export const account = new Account(client);
-export const tablesDB = new TablesDB(client);
-const avatars = new Avatars(client);
-
-// const verifyConnection = async () => {
-//     try {
-//       const account = new Account(client);
-//       await account.get(); // Попытка получить информацию аккаунта
-//       console.log('✅Appwrite соединение успешно');
-//     } catch (error) {
-//       console.error('❌Ошибка соединения с Appwrite:', error);
-//     }
-//   };
-
-//   verifyConnection();
-
-export const createUser = async ({ email, password, name }: CreateUserParams) => {
-        try {
-            const newAccount = await account.create({userId: ID.unique(), email, password, name})
-            if(!newAccount) throw Error;
-
-            await signIn({email, password});
-
-            const avatarUrl = avatars.getInitialsURL(name);
-
-            return await tablesDB.createRow({
-                databaseId: appwriteConfig.databaseId,
-                tableId: appwriteConfig.userTableId,
-                rowId: ID.unique(),
-                data: { email, name, accountId: newAccount.$id, avatar: avatarUrl }
+export const createUser = async ({ email, password, userName }: CreateUserParams) => {
+    try {
+        const response = await fetch('https://gaming-collection-app-backend.onrender.com/users/signup', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email, password, userName })
         });
 
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || 'Registration failed');
+        }
+
+        const data = await response.json();
+       // return data; // Можно вернуть данные, если нужно
+    } catch (error) {
+        throw new Error(error instanceof Error ? error.message : 'Unknown error');
+    }
+};
+
+export const signIn = async ({ email, password }: SignInParams) => {  
+try {
+    const response = await fetch('https://gaming-collection-app-backend.onrender.com/users/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ email, password })
+    });
+
+    if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Authorisation failed');
+    }
+
+    const data = await response.json();
+} catch (error) {
+    throw new Error(error instanceof Error ? error.message : 'Unknown error');
+}
+};
     
-        } catch (error) {
-            throw new Error(error as string)
-        }
-}
-
-export const signIn = async ({ email, password }: SignInParams) => {
-        try {
-            const session = await account.createEmailPasswordSession(email, password);
-        } catch (error) {
-            throw new Error(error as string)
-        }
-
-}
 
 // export const updateSearchCount = async (query: string, game: Game) => {
 //     try {
@@ -111,3 +94,22 @@ export const signIn = async ({ email, password }: SignInParams) => {
 //      //если нет, то создаёт новую запись в БД Appwrite и устанавливает число поисков - 1
      
 //  }
+
+export const getCurrentUser = async () => {
+    try {
+        const currentAccount = await account.get();
+        if(!currentAccount) throw Error;
+
+        const currentUser = await Databases.listDocuments(
+            appwrite.databaseId,
+            appwriteConfig.userCollectionId,
+            [Query.equal('accountId', currentAccount.$id)]
+        )
+
+        if(!currentUser) throw Error;
+
+        return currentUser.documents[0];
+    } catch (error) {
+        throw new Error (error as string);
+    }
+}

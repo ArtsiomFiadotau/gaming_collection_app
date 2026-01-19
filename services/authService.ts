@@ -40,15 +40,6 @@ export async function refreshToken(): Promise<string | null> {
   }
 }
 
-// пример функции вызова вашего сервера для получения нового токена
-// async function fetchNewTokenFromServer() {
-//   const response = await fetch('http://localhost:3001/get-igdb-token');
-//   if (response.ok) {
-//     return await response.json(); // { access_token, expires_in }
-//   }
-//   throw new Error('Failed to fetch new token');
-// }
-
 async function fetchNewTokenFromServer() {
     try {
       const response = await axios.post(

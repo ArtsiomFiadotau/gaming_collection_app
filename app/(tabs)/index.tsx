@@ -4,6 +4,7 @@ import { icons } from "@/constants/icons";
 import { images } from "@/constants/images";
 import { fetchGames } from "@/services/api";
 import useFetch from "@/services/useFetch";
+import useAuthStore from "@/store/auth.store";
 import { useRouter } from "expo-router";
 import { ActivityIndicator, FlatList, Image, ScrollView, Text, View } from "react-native";
 import { Account, Client } from 'react-native-appwrite';
@@ -20,6 +21,9 @@ client
 
 
 export default function Index() {
+      const { user } = useAuthStore();
+
+      console.log("useAuthStore", user);
       const router = useRouter();
 
       const { 

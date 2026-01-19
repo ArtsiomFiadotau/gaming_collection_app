@@ -17,9 +17,14 @@ export interface Category extends Models.Document {
 }
 
 export interface User extends Models.Document {
-    name: string;
+    usedId: number;
+    userName: string;
     email: string;
-    avatar: string;
+    avatarUrl: string;
+    gamesNumber: number;
+    gamesCompleted: number;
+    ratingAverage: number;
+    isModerator: boolean; 
 }
 
 export interface CartCustomization {
@@ -93,7 +98,7 @@ interface ProfileFieldProps {
 interface CreateUserParams {
     email: string;
     password: string;
-    name: string;
+    userName: string;
 }
 
 interface SignInParams {
