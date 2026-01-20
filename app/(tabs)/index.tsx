@@ -7,23 +7,9 @@ import useFetch from "@/services/useFetch";
 import useAuthStore from "@/store/auth.store";
 import { useRouter } from "expo-router";
 import { ActivityIndicator, FlatList, Image, ScrollView, Text, View } from "react-native";
-import { Account, Client } from 'react-native-appwrite';
-
-
-let client: Client;
-let account: Account;
-
-client = new Client();
-client
-  .setEndpoint('https://fra.cloud.appwrite.io/v1')
-  .setProject('695e953f00040467eb05')   // Your Project ID
-  .setPlatform('gaming_collection_app');   // Your package name / bundle identifier
-
 
 export default function Index() {
       const { user } = useAuthStore();
-
-      console.log("USER:", JSON.stringify(user, null, 2));
       const router = useRouter();
 
       const { 

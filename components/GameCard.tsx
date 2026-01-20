@@ -23,7 +23,7 @@ const GameCard = ( {id, cover_url, name, rating, release_date}: Game) => {
             <View className="flex-row item-center justify-start gap-x-1">
                 <Image source={icons.star} className="size-4"
                 />
-                <Text className="text-xs text-white font-bold uppercase">{Math.round(rating / 10)}</Text>
+                <Text className="text-xs text-white font-bold uppercase">{Math.round(rating ?? 0/10)}</Text>
 
             </View>
             <View className="flex-row item-center justify-between">

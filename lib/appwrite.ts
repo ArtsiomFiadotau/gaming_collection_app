@@ -1,7 +1,7 @@
 import { CreateUserParams, SignInParams } from '@/types/type';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const API_BASE = 'https://gaming-collection-app-backend.onrender.com';
+export const API_BASE = 'https://gaming-collection-app-backend.onrender.com';
 const STORAGE_USER_KEY = 'user';
 
 export const createUser = async ({ email, password, userName }: CreateUserParams) => {
@@ -44,10 +44,6 @@ export const signIn = async ({ email, password }: SignInParams) => {
     }
 
     const data = await response.json();
-    // По вашему users_login backend возвращает { message, token }
-    // Токен не используем. Чтобы получить userId, нужно запросить пользователя или сохранить при регистрации.
-    // Попробуем получить user по email: добавьте на backend endpoint /users/by-email или измените login чтобы возвращал user.
-    // Здесь мы ожидаем, что backend вернёт также user (если нет — возвращаем null).
     const user = data.user ?? null;
 
     if (user) {
@@ -55,7 +51,6 @@ export const signIn = async ({ email, password }: SignInParams) => {
       return user;
     }
 
-    // fallback: если backend вернёт только token, попробуем декодировать токен, но т.к. не используем JWT тут — возвращаем null
     return null;
   } catch (error) {
     throw new Error(error instanceof Error ? error.message : 'Unknown error');
@@ -81,11 +76,3 @@ export const signOut = async () => {
   }
 };
 
-// export getTrendingGames = async (): Promise<TrendingGame[] | undefined> => {
-//   try {
-    
-//   } catch (error) {
-//     console.log(error);
-
-//   }
-// } 
