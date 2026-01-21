@@ -4,7 +4,7 @@ import { Redirect, Slot } from 'expo-router';
 import React from 'react';
 import { Dimensions, ImageBackground, KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native';
 
-export default function _Layout() {
+export default function AuthLayout() {
   const { isAuthenticated} = useAuthStore();
 
   if(isAuthenticated) return <Redirect href="/"/>

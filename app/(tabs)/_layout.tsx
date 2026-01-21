@@ -5,6 +5,7 @@ import { Redirect, Tabs } from 'expo-router'
 import React from 'react'
 import { Image, ImageBackground, Text, View } from 'react-native'
 
+
 const TabIcon = ({ focused, icon, title }: any) => {
     if(focused) {
         return (
@@ -26,7 +27,8 @@ const TabIcon = ({ focused, icon, title }: any) => {
     
 }
 
-const _Layout = () => {
+//const _Layout = () => {
+  export default function TabLayout() {
   const { isAuthenticated } = useAuthStore();
   
 
@@ -115,4 +117,4 @@ const _Layout = () => {
   )
 }
 
-export default _Layout
+//export default _Layout

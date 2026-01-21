@@ -10,6 +10,7 @@ import { ActivityIndicator, FlatList, Image, ScrollView, Text, View } from "reac
 
 export default function Index() {
       const { user } = useAuthStore();
+      console.log("useAuthstore", JSON.stringify(user, null, 2));
       const router = useRouter();
 
       const { 

@@ -1,9 +1,9 @@
 import { icons } from '@/constants/icons';
 import { fetchGameDetails } from '@/services/api';
 import useFetch from '@/services/useFetch';
-import { useLocalSearchParams } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import React from 'react';
-import { Image, ScrollView, Text, View } from 'react-native';
+import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 
 interface GameInfoProps {
   label: string;
@@ -41,11 +41,17 @@ const GameDetails = () => {
                 <Image source={icons.star} className="size-6"/>
                 <Text className='text-light-200 text-x5'>{Math.round(game?.averageRating ?? 0/10)}</Text>
             </View>
-
             <GameInfo label="Summary" value={game?.description} />
-
+            <GameInfo label="Genres" value={game?.genre || 'N/A'} />
+            <View className="flex flex-row justify-between w-1/2 py-6">
+            <GameInfo label="Developers" value={game?.developer || 'N/A'} />
+            </View>
         </View>
       </ScrollView>
+      <TouchableOpacity className='absolute bottom-11 left-0 right-0 mx-5 bg-accent rounded-lg py-3.5 flex flex-row items-center justify-center z-50' onPress={router.back}>
+          <Image source={icons.arrow} className='size-5 mr-1 mt-0.5 rotate-180' tintColor="#fff"/> 
+          <Text className='text-white font-semibold text-base'>Go back</Text>
+      </TouchableOpacity>
     </View>
   )
 }

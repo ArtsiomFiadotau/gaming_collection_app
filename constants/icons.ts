@@ -1,7 +1,9 @@
 import arrow from "@/assets/icons/arrow.png";
 import collection from "@/assets/icons/collection.png";
+import edit from "@/assets/icons/edit.png";
 import home from "@/assets/icons/home.png";
 import logo from "@/assets/icons/logo.png";
+import logout from "@/assets/icons/logout.png";
 import person from "@/assets/icons/person.png";
 import play from "@/assets/icons/play.png";
 import search from "@/assets/icons/search.png";
@@ -16,4 +18,6 @@ export const icons = {
   star,
   play,
   arrow,
+  edit,
+  logout
 };

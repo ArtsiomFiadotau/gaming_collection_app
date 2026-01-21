@@ -7,12 +7,12 @@ interface Game {
   rating: number;
 }
 
-interface TrendingMovie {
+interface TrendingGame {
   searchTerm: string;
-  movie_id: number;
+  gameId: number;
   title: string;
   count: number;
-  poster_url: string;
+  coverUrl: string;
 }
 
 interface GameDetails {
@@ -27,6 +27,6 @@ interface GameDetails {
 }
 
 interface TrendingCardProps {
-  movie: TrendingMovie;
+  game: TrendingGame;
   index: number;
 }
