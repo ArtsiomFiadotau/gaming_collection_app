@@ -7,6 +7,16 @@ interface Game {
   rating: number;
 }
 
+interface CollectionItem {
+  userId: number;
+  gameId: number,
+  rating: number;
+  status: string;
+  isOwned: string;
+  dateStarted: date;
+  dateCompleted: date;
+}
+
 interface TrendingGame {
   searchTerm: string;
   gameId: number;
