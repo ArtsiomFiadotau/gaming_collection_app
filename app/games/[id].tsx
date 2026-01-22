@@ -30,8 +30,6 @@ const GameDetails = () => {
     fetchGameDetails(id as string));
   const [adding, setAdding] = useState(false);
 
-  // TODO: получить реальный userId из контекста/хранилища авторизации
-  //const CURRENT_USER_ID = 1;
   const user = useAuthStore(state => state.user);
 
   const addToCollection = async () => {
@@ -45,7 +43,7 @@ const GameDetails = () => {
         userId: Number(user?.userId),
         gameId: Number(game.gameId),
         // значения по умолчанию — можно изменить
-        rating: null,
+        rating: 0,
         status: 'Not specified',
         isOwned: false,
         dateStarted: null,
@@ -78,10 +76,15 @@ const GameDetails = () => {
       <ScrollView contentContainerStyle={{
         paddingBottom: 80}}>
         <View>
-            <Image source={{ uri: game?.coverImage ? `https://images.igdb.com/igdb/image/upload/t_1080p/${game?.coverImage.split('/').pop()}` : undefined }} className="w-full h-[550px]" resizeMode="stretch"/>
+            <Image source={{ 
+              uri: game?.coverImage ? 
+              `https://images.igdb.com/igdb/image/upload/t_1080p/${game?.coverImage.split('/').pop()}` 
+              : undefined }} 
+              className="w-full h-[550px]" 
+              resizeMode="stretch"/>
         </View>
 
-        {/* Buttons below image */}
+       
         <View className="px-5 mt-4 flex-row items-center justify-start gap-x-3">
           <TouchableOpacity
             className={`px-4 py-2 rounded-md bg-accent ${adding ? 'opacity-60' : ''}`}

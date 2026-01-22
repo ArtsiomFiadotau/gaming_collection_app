@@ -1,6 +1,6 @@
 import { icons } from "@/constants/icons";
 import { signOut } from "@/lib/appwrite";
-import useAuthStore from '@/store/auth.store'; // путь может быть '@/store/auth.store' или '@/stores/auth.store' в зависимости от структуры проекта
+import useAuthStore from '@/store/auth.store';
 import { router } from "expo-router";
 import React, { useState } from 'react';
 import { Alert, Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';

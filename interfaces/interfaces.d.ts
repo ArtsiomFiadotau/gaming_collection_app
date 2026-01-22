@@ -7,14 +7,34 @@ interface Game {
   rating: number;
 }
 
+interface ColItem {
+  gameId: number;
+  userId: number;
+  title: number;
+  coverImage: string;
+}
+
+
+interface GameMyApi {
+  gameId: number;
+  title: string;
+  genre: string;
+  developer: string;
+  description: string;
+  coverImage: string;
+  releaseDate: string;
+  averageRating: number;
+}
+
 interface CollectionItem {
   userId: number;
   gameId: number,
-  rating: number;
-  status: string;
-  isOwned: string;
-  dateStarted: date;
-  dateCompleted: date;
+  rating?: number | null;
+  status: string | null;
+  isOwned: string | null;
+  dateStarted: date | null;
+  dateCompleted: date | null;
+  game?: GameMyApi | null;
 }
 
 interface TrendingGame {
