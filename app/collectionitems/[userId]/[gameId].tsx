@@ -1,7 +1,9 @@
 import { API_BASE } from '@/lib/appwrite';
+import { fetchSingleColItem } from '@/services/api';
+import useFetch from '@/services/useFetch';
 import useAuthStore from '@/store/auth.store';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { router, useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import { Alert, Image, Platform, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
@@ -23,15 +25,13 @@ const FieldRow = ({ label, children }: { label: string; children: React.ReactNod
 );
 
 const CollectionItemPage = () => {
-  const { id } = useLocalSearchParams(); // here id = gameId passed in route
+const { gameId, userId: paramUserId } = useLocalSearchParams(); 
+  console.log('Raw gameId:', gameId, 'Raw userId:', paramUserId);
   const user = useAuthStore(state => state.user);
-  const userId = Number(user?.userId ?? (global as any).CURRENT_USER_ID ?? 1);
-  const gameId = Number(id);
+  const userId = Number(paramUserId || user?.userId || (global as any).CURRENT_USER_ID || 1);
+  const gameIdNum = Number(gameId);
 
-  const [loading, setLoading] = useState<boolean>(true);
-  const [data, setData] = useState<CollectionItemResponse | null>(null);
-
-  // editable fields
+// editable fields
   const [isOwned, setIsOwned] = useState<boolean>(false);
   const [rating, setRating] = useState<string>('0');
   const [status, setStatus] = useState<string>('not specified');
@@ -40,42 +40,46 @@ const CollectionItemPage = () => {
 
   const [showPicker, setShowPicker] = useState<{ which: 'started' | 'completed' | null }>({ which: null });
 
+  const { data: collectionData, loading, error, refetch } = useFetch(
+    () => fetchSingleColItem({
+      query: '',
+      userId: userId.toString(),
+      gameId: gameIdNum.toString()
+    }),
+    !!userId && !isNaN(gameIdNum) && gameIdNum > 0
+  );
+
+  // Debug logging
+  console.log('userId:', userId, 'gameId:', gameId);
+  console.log('collectionData:', collectionData);
+  console.log('loading:', loading);
+  console.log('error:', error);
+
   useEffect(() => {
-    const fetchItem = async () => {
-      setLoading(true);
-      try {
-        const resp = await fetch(`${API_BASE}/collectionItems/${userId}/${gameId}`);
-        if (!resp.ok) {
-          const txt = await resp.text();
-          throw new Error(txt || `HTTP ${resp.status}`);
-        }
-        const json: CollectionItemResponse = await resp.json();
-        setData(json);
+    if (collectionData) {
+      // initialize editable states from response
+      setIsOwned(Boolean(collectionData.isOwned));
+      setRating((collectionData.rating && typeof collectionData.rating === 'number') ? String(collectionData.rating) : (collectionData.rating === "not specified" ? '0' : String(collectionData.rating ?? '0')));
+      setStatus(collectionData.status ?? 'not specified');
 
-        // initialize editable states from response
-        setIsOwned(Boolean(json.isOwned));
-        setRating((json.rating && typeof json.rating === 'number') ? String(json.rating) : (json.rating === "not specified" ? '0' : String(json.rating ?? '0')));
-        setStatus(json.status ?? 'not specified');
-
-        // try parse dates if present
-        if ((json as any).dateStarted) {
-          const ds = new Date((json as any).dateStarted);
-          if (!isNaN(ds.getTime())) setDateStarted(ds);
-        }
-        if ((json as any).dateCompleted) {
-          const dc = new Date((json as any).dateCompleted);
-          if (!isNaN(dc.getTime())) setDateCompleted(dc);
-        }
-      } catch (err) {
-        console.warn(err);
-        Alert.alert('Error', 'Failed to load collection item');
-      } finally {
-        setLoading(false);
+      // try parse dates if present
+      if (collectionData.dateStarted) {
+        const ds = new Date(collectionData.dateStarted);
+        if (!isNaN(ds.getTime())) setDateStarted(ds);
       }
-    };
+      if (collectionData.dateCompleted) {
+        const dc = new Date(collectionData.dateCompleted);
+        if (!isNaN(dc.getTime())) setDateCompleted(dc);
+      }
+    }
+  }, [collectionData]);
 
-    fetchItem();
-  }, [userId, gameId]);
+  useEffect(() => {
+    if (error) {
+      console.warn(error);
+      Alert.alert('Error', 'Failed to load collection item');
+    }
+  }, [error]);
 
   const onChangeDate = (_: any, selectedDate?: Date) => {
     setShowPicker({ which: null });
@@ -101,18 +105,18 @@ const CollectionItemPage = () => {
       numericRating = null;
     }
 
-    const payload = {
+const payload = {
       userId,
-      gameId,
+      gameId: gameIdNum,
       rating: numericRating,
       status,
       isOwned,
-      dateStarted: dateStarted ? dateStarted.toISOString() : null,
-      dateCompleted: dateCompleted ? dateCompleted.toISOString() : null,
+      dateStarted: dateStarted ? dateStarted.toISOString().split('T')[0] : null, // YYYY-MM-DD
+      dateCompleted: dateCompleted ? dateCompleted.toISOString().split('T')[0] : null, // YYYY-MM-DD
     };
 
     try {
-      const resp = await fetch(`${API_BASE}/collectionItems/${userId}/${gameId}`, {
+      const resp = await fetch(`${API_BASE}/collectionitems/${userId}/${gameId}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
@@ -123,9 +127,9 @@ const CollectionItemPage = () => {
         throw new Error(txt || `HTTP ${resp.status}`);
       }
 
-      Alert.alert('Success', 'Changes saved');
+Alert.alert('Success', 'Changes saved');
       // optionally refresh
-      router.replace(router.pathname); // or just refetch; here simple navigation refresh
+      refetch();
     } catch (err) {
       console.warn(err);
       Alert.alert('Error', 'Failed to save changes');
@@ -137,19 +141,19 @@ const CollectionItemPage = () => {
       <ScrollView contentContainerStyle={{ paddingBottom: 120 }}>
         {/* cover image */}
         <View>
-          <Image
-            source={{
-              uri: data?.coverImage
-                ? `https:${data?.coverImage}`
-                : undefined,
-            }}
-            className="w-full h-[120px]"
+<Image 
+            source={{ 
+              uri: collectionData?.coverImage 
+                ? `https://images.igdb.com/igdb/image/upload/t_1080p/${collectionData?.coverImage.split('/').pop()}` 
+                : undefined 
+            }} 
+            className="w-full h-[420px]" 
             resizeMode="cover"
           />
         </View>
 
         <View className="px-5 mt-4">
-          <Text className="text-white text-2xl font-bold mb-3">{data?.title ?? 'Game'}</Text>
+          <Text className="text-white text-2xl font-bold mb-3">{collectionData?.title ?? 'Game'}</Text>
 
           {/* Fields list */}
           <FieldRow label="Is Owned">

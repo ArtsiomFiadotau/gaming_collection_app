@@ -1,5 +1,4 @@
 import { API_BASE } from "@/lib/appwrite";
-import useAuthStore from '@/store/auth.store';
 
 export const IGDB_CONFIG = {
     BASE_URL: 'https://api.igdb.com/v4',
@@ -212,8 +211,6 @@ export const fetchCollectionItems = async ({ query, userId }: { query: string; u
 
 const data = await response.json();
 
-  // Бэкенд возвращает { userName, games }
-  // Преобразуем массив игр в нужный формат
   const transformedData = (data.games || []).map(item => ({
     userId: item.userId,
     gameId: item.gameId,
@@ -225,3 +222,22 @@ const data = await response.json();
   
 }
 
+export const fetchSingleColItem = async ({ query, userId, gameId }: { query: string; userId: string, gameId: string }) => {
+  if (!userId) {
+    throw new Error('User ID is required');
+  }
+
+  const response = await fetch(`${API_BASE}/collectionitems/${userId}/${gameId}`, {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' }, 
+})
+
+  if(!response.ok) {
+      throw new Error('Failed to fetch games', response.statusText);
+  }
+
+const data = await response.json();
+
+
+  return data;
+}
