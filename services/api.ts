@@ -241,3 +241,82 @@ const data = await response.json();
 
   return data;
 }
+
+export const fetchSingleUser = async ({ query, userId }: { query: string; userId: string }) => {
+  if (!userId) {
+    throw new Error('User ID is required');
+  }
+
+  const response = await fetch(`${API_BASE}/users/${userId}`, {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' }, 
+})
+
+  if(!response.ok) {
+      throw new Error('Failed to fetch games', response.statusText);
+  }
+
+const data = await response.json();
+
+
+  return data;
+}
+
+export const fetchReviewsByGame = async ({ query, gameId }: { query: string; gameId: string }) => {
+  console.log('fetchReviewsByGame called with gameId:', gameId);
+  
+  const response = await fetch(`${API_BASE}/reviews/game/${gameId}`, {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' }, 
+})
+
+  console.log('fetchReviewsByGame response status:', response.status);
+
+if(!response.ok) {
+      throw new Error('Failed to fetch reviews', response.statusText);
+  }
+
+const data = await response.json();
+  console.log('fetchReviewsByGame raw data:', data);
+
+  const transformedData = (data.reviews || []).map((item, index) => ({
+    userId: item.userId,
+    gameId: item.gameId,
+    userName: item.userName,
+    title: item.title,
+    reviewTitle: item.reviewTitle,
+    reviewText: item.reviewText,
+    reviewId: item.reviewId || item.id || index, // Временное решение используем index
+  }));
+
+  console.log('fetchReviewsByGame transformed data:', transformedData);
+
+  return transformedData;
+  
+}
+
+export const fetchReviewsByUser = async ({ query, userId }: { query: string; userId: string }) => {
+  
+  const response = await fetch(`${API_BASE}/reviews/user/${userId}`, {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' }, 
+})
+
+  if(!response.ok) {
+      throw new Error('Failed to fetch reviews', response.statusText);
+  }
+
+const data = await response.json();
+
+  const transformedData = (data.reviews || []).map(item => ({
+    userId: item.userId,
+    gameId: item.gameId,
+    userName: item.userName,
+    title: item.title,
+    reviewTitle: item.reviewTitle,
+    reviewText: item.reviewText
+  }));
+
+  return transformedData;
+  
+}

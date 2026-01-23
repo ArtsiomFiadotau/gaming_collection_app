@@ -32,8 +32,8 @@ interface CollectionItem {
   rating?: number | null;
   status: string | null;
   isOwned: string | null;
-  dateStarted: date | null;
-  dateCompleted: date | null;
+  dateStarted: string | null;
+  dateCompleted: string | null;
   game?: GameMyApi | null;
 }
 

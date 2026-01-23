@@ -17,7 +17,8 @@
         "foregroundImage": "./assets/images/logo.png"
       },
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "package": "com.artsiomfiadotau.gaming_collection_app"
     },
     "web": {
       "output": "static",
@@ -55,6 +56,11 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "extra": {
+      "eas": {
+        "projectId": "1d4fb987-3f29-47e7-9d91-8204011a4c1e"
+      }
     }
   }
 }

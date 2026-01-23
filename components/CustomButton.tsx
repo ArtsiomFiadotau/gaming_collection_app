@@ -5,7 +5,7 @@ import { ActivityIndicator, Text, TouchableOpacity, View } from 'react-native'
 
 const CustomButton = ({
   onPress,
-  title="Click Me",
+  title = "Click Me",
   style,
   textStyle,
   leftIcon,
@@ -15,17 +15,16 @@ const CustomButton = ({
     <TouchableOpacity className={cn('custom-btn', style)} onPress={onPress}>
       {leftIcon}
 
-      <View className="flex-center flex-row">
+      <View className="flex-center flex-row" style={undefined}>
         {isLoading ? (
-            <ActivityIndicator size="small" color="white" />
+          <ActivityIndicator size="small" color="#ffffff" />
         ) : (
-            <Text className={cn('text-white-100 paragraph-semibold', textStyle)}>
-              {title}
-              </Text>
+          <Text className={cn('text-white-100 paragraph-semibold', textStyle)}>
+            {title}
+          </Text>
         )}
-
       </View>
-      <Text>CustomButton</Text>
+      {/* Удалён лишний текстовый элемент: <Text>CustomButton</Text> */}
     </TouchableOpacity>
   )
 }

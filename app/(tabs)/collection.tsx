@@ -1,10 +1,11 @@
 import CollectionItem from '@/components/CollectionItem';
+import { images } from '@/constants/images';
 import { fetchCollectionItems } from '@/services/api';
 import useFetch from "@/services/useFetch";
 import useAuthStore from '@/store/auth.store';
-import React, { useEffect } from 'react';
-import { ActivityIndicator, FlatList, Text, View } from 'react-native';
 import { useFocusEffect } from 'expo-router';
+import React from 'react';
+import { ActivityIndicator, FlatList, Image, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function Collection() {
@@ -31,6 +32,8 @@ export default function Collection() {
 
 return (
 <SafeAreaView className='bg-primary flex-1'>
+<Image source={images.bg} className="flex-1 absolute w-full z-0"
+    resizeMode="cover" />
       <View className="flex-1 px-4 pt-4">
             {gamesLoading ? (
               <ActivityIndicator

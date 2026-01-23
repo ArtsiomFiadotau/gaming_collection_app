@@ -47,5 +47,11 @@ export default function RootLayout() {
         headerShown: false 
       }}
     />
+    <Stack.Screen
+      name="collectionitems/[userId]/[gameId]"
+      options={{ 
+        headerShown: false 
+      }}
+    />
   </Stack>)
 }
