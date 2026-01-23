@@ -8,11 +8,12 @@ interface ReviewComponentProps {
   title: string;
   reviewText: string;
   reviewId: number;
+  gameId?: string;
 }
 
-const ReviewComponent = ({ reviewTitle, userName, title, reviewText, reviewId }: ReviewComponentProps) => {
+const ReviewComponent = ({ reviewTitle, userName, title, reviewText, reviewId, gameId }: ReviewComponentProps) => {
   const handlePress = () => {
-    router.push(`/reviews/review?reviewId=${reviewId}`);
+    router.push(`/reviews/${reviewId}?gameId=${gameId}`);
   };
 
   // Shorten review text to 3 lines

@@ -286,7 +286,7 @@ const data = await response.json();
     title: item.title,
     reviewTitle: item.reviewTitle,
     reviewText: item.reviewText,
-    reviewId: item.reviewId || item.id || index, // Временное решение используем index
+    reviewId: item.reviewId || index + 1, // Используем index+1 как временное решение
   }));
 
   console.log('fetchReviewsByGame transformed data:', transformedData);

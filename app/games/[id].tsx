@@ -165,7 +165,7 @@ const GameDetails = () => {
                   nestedScrollEnabled={true}
                   style={{ width: '100%' }}
                 >
-                  {reviewsData.map((review: any, index: number) => (
+{reviewsData.map((review: any, index: number) => (
                     <ReviewComponent
                       key={review.reviewId || index}
                       reviewTitle={review.reviewTitle}
@@ -173,6 +173,7 @@ const GameDetails = () => {
                       title={review.title}
                       reviewText={review.reviewText}
                       reviewId={review.reviewId}
+                      gameId={gameIdStr}
                     />
                   ))}
                 </ScrollView>
