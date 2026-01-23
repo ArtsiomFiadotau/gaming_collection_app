@@ -27,7 +27,7 @@ const TabIcon = ({ focused, icon, title }: any) => {
     
 }
 
-//const _Layout = () => {
+
   export default function TabLayout() {
   const { isAuthenticated } = useAuthStore();
   
@@ -116,5 +116,3 @@ const TabIcon = ({ focused, icon, title }: any) => {
     
   )
 }
-
-//export default _Layout

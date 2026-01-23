@@ -1,8 +1,10 @@
 import { icons } from "@/constants/icons";
 import { images } from "@/constants/images";
 import { API_BASE } from "@/lib/appwrite";
+import { fetchComments } from '@/services/api';
 import useFetch from '@/services/useFetch';
 import useAuthStore from '@/store/auth.store';
+import CommentComponent from '@/components/CommentComponent';
 import { router, useLocalSearchParams } from "expo-router";
 import React, { useEffect, useState } from 'react';
 import { Alert, Image, ScrollView, Text, TextInput, TouchableOpacity, View, ActivityIndicator } from 'react-native';
@@ -31,24 +33,33 @@ const ReviewDetailPage = () => {
     () => {
       const reviewIdNum = Number(reviewId);
       console.log('Fetching review with ID:', reviewId, 'as number:', reviewIdNum);
-return fetch(`${API_BASE}/reviews/${reviewIdNum}`, {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json' }
-    }).then(res => {
-      console.log('Review fetch response status:', res.status);
-      if (!res.ok) {
-        console.log('Response text:', res.statusText);
-        throw new Error(`Failed to fetch review: ${res.status}`);
-      }
-      return res.json();
-    }).then(data => {
-      console.log('Review fetch data:', data);
-      console.log('Data type:', typeof data);
-      console.log('Data keys:', data ? Object.keys(data) : 'null/undefined');
-      return data;
-    });
+      return fetch(`${API_BASE}/reviews/${reviewIdNum}`, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' }
+      }).then(res => {
+        console.log('Review fetch response status:', res.status);
+        if (!res.ok) {
+          console.log('Response text:', res.statusText);
+          throw new Error(`Failed to fetch review: ${res.status}`);
+        }
+        return res.json();
+      }).then(data => {
+        console.log('Review fetch data:', data);
+        console.log('Data type:', typeof data);
+        console.log('Data keys:', data ? Object.keys(data) : 'null/undefined');
+        return data;
+      });
     },
     !!reviewId
+  );
+
+  // Получаем комментарии к отзыву
+  const reviewIdStr = Array.isArray(reviewId) ? reviewId[0] : (reviewId?.toString() || '');
+  console.log('reviewIdStr for comments:', reviewIdStr);
+  
+  const { data: commentsData, loading: commentsLoading } = useFetch(
+    () => fetchComments({ reviewId: reviewIdStr, query: '' }),
+    !!reviewIdStr
   );
 
   const handleSendComment = async () => {
@@ -119,7 +130,6 @@ return fetch(`${API_BASE}/reviews/${reviewIdNum}`, {
         <View className="px-5 pt-8">
           {reviewData ? (
             <>
-              <Text className="text-white mb-4">Debug: reviewData loaded</Text>
               {/* Поле Author */}
               <View className="mb-6">
                 <Text className="text-light-200 text-sm font-semibold mb-2">Author</Text>
@@ -194,6 +204,27 @@ return fetch(`${API_BASE}/reviews/${reviewIdNum}`, {
                   <Text className="text-white font-semibold">Cancel</Text>
                 </TouchableOpacity>
               </View>
+            </View>
+          )}
+
+          {/* Список комментариев */}
+          {commentsData && commentsData.comments && Array.isArray(commentsData.comments) && commentsData.comments.length > 0 && (
+            <View className="mb-6">
+              <Text className="text-light-200 text-sm font-semibold mb-3">Comments</Text>
+              <ScrollView
+                showsVerticalScrollIndicator={false}
+                nestedScrollEnabled={true}
+                style={{ width: '100%', maxHeight: 300 }}
+              >
+                {commentsData.comments.map((comment: any, index: number) => (
+                  <CommentComponent
+                    key={comment.commentId || index}
+                    commentId={comment.commentId}
+                    commentText={comment.commentText}
+                    userName={comment.userName}
+                  />
+                ))}
+              </ScrollView>
             </View>
           )}
         </View>

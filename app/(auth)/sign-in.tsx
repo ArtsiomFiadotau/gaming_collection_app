@@ -38,7 +38,7 @@ const SignIn = () => {
   }
   
   return (
-    <View className="gap-10 bg-white rounded-lg p-5 mt-5">
+    <View className="gap-10 bg-primary rounded-lg p-5 mt-5">
       <CustomInput 
         placeholder="Enter your email"
         value={form.email}
@@ -62,7 +62,7 @@ const SignIn = () => {
       />     
 
       <View className="flex justify-center mt-5 flex-row gap-2">
-        <Text className="base-regular" text-gray-100>
+        <Text className="base-regular text-gray-50" >
           Don't have an account?
         </Text>
         <Link href="/sign-up" className='base-bold text-gray-200'>

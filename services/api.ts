@@ -320,3 +320,30 @@ const data = await response.json();
   return transformedData;
   
 }
+
+export const fetchComments = async ({ query, reviewId }: { query: string; reviewId: string }) => {
+  console.log('*** fetchComments function START ***');
+  console.log('fetchComments called with reviewId:', reviewId);
+  console.log('API_BASE:', API_BASE);
+  console.log('Full URL:', `${API_BASE}/comments/review/${reviewId}`);
+  
+  const response = await fetch(`${API_BASE}/comments/review/${reviewId}`, {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' }, 
+  })
+
+  console.log('fetchComments response status:', response.status);
+  console.log('fetchComments response ok:', response.ok);
+
+  if(!response.ok) {
+      throw new Error('Failed to fetch comments', response.statusText);
+  }
+
+  const data = await response.json();
+  console.log('fetchComments raw data:', data);
+  console.log('Data type:', typeof data);
+
+  // Возвращаем данные как есть, без трансформации
+  return data;
+  
+}

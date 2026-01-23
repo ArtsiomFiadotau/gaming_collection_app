@@ -1,16 +1,5 @@
 import { Models } from "react-native-appwrite";
 
-export interface MenuItem extends Models.Document {
-    name: string;
-    price: number;
-    image_url: string;
-    description: string;
-    calories: number;
-    protein: number;
-    rating: number;
-    type: string;
-}
-
 export interface Category extends Models.Document {
     name: string;
     description: string;
@@ -44,12 +33,6 @@ interface TabBarIconProps {
     title: string;
 }
 
-interface PaymentInfoStripeProps {
-    label: string;
-    value: string;
-    labelStyle?: string;
-    valueStyle?: string;
-}
 
 interface CustomButtonProps {
     onPress?: () => void;
@@ -62,15 +45,6 @@ interface CustomButtonProps {
 
 interface CustomHeaderProps {
     title?: string;
-}
-
-interface CustomInputProps {
-    placeholder?: string;
-    value?: string;
-    onChangeText?: (text: string) => void;
-    label: string;
-    secureTextEntry?: boolean;
-    keyboardType?: "default" | "email-address" | "numeric" | "phone-pad";
 }
 
 interface ProfileFieldProps {
