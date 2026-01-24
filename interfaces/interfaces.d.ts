@@ -18,12 +18,7 @@ interface ColItem {
 interface GameMyApi {
   gameId: number;
   title: string;
-  genre: string;
-  developer: string;
-  description: string;
   coverImage: string;
-  releaseDate: string;
-  averageRating: number;
 }
 
 interface CollectionItem {

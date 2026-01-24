@@ -85,6 +85,20 @@ const TabIcon = ({ focused, icon, title }: any) => {
             }}    
         />
         <Tabs.Screen 
+            name="lists"
+            options={{
+                title: 'Lists',
+                headerShown: false,
+                tabBarIcon: ({ focused }) => (
+                    <TabIcon 
+                    focused={focused} 
+                    icon={icons.search}
+                    title="Lists"
+                    />
+                  )
+            }}    
+        />
+        <Tabs.Screen 
             name="collection"
             options={{
                 title: 'Collection',

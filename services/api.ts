@@ -263,22 +263,19 @@ const data = await response.json();
 }
 
 export const fetchReviewsByGame = async ({ query, gameId }: { query: string; gameId: string }) => {
-  console.log('fetchReviewsByGame called with gameId:', gameId);
-  
+    
   const response = await fetch(`${API_BASE}/reviews/game/${gameId}`, {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' }, 
 })
 
-  console.log('fetchReviewsByGame response status:', response.status);
-
+  
 if(!response.ok) {
       throw new Error('Failed to fetch reviews', response.statusText);
   }
 
 const data = await response.json();
-  console.log('fetchReviewsByGame raw data:', data);
-
+  
   const transformedData = (data.reviews || []).map((item, index) => ({
     userId: item.userId,
     gameId: item.gameId,
@@ -322,28 +319,107 @@ const data = await response.json();
 }
 
 export const fetchComments = async ({ query, reviewId }: { query: string; reviewId: string }) => {
-  console.log('*** fetchComments function START ***');
-  console.log('fetchComments called with reviewId:', reviewId);
-  console.log('API_BASE:', API_BASE);
-  console.log('Full URL:', `${API_BASE}/comments/review/${reviewId}`);
-  
+    
   const response = await fetch(`${API_BASE}/comments/review/${reviewId}`, {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' }, 
   })
 
-  console.log('fetchComments response status:', response.status);
-  console.log('fetchComments response ok:', response.ok);
-
+ 
   if(!response.ok) {
       throw new Error('Failed to fetch comments', response.statusText);
   }
 
   const data = await response.json();
-  console.log('fetchComments raw data:', data);
-  console.log('Data type:', typeof data);
+
 
   // Возвращаем данные как есть, без трансформации
   return data;
+  
+}
+
+export const fetchGamelists = async ({ query }: { query: string }) => {
+ 
+
+  
+
+  const response = await fetch(`${API_BASE}/gamelists/`, {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' }, 
+})
+
+  
+
+  if(!response.ok) {
+      throw new Error('Failed to fetch gamelists', response.statusText);
+  }
+
+  const data = await response.json();
+
+  
+ 
+  const transformedData = (data.gamelists || []).map((list: any, index: number) => ({
+    listId: list.listId,
+    listTitle: list.listTitle,
+    userName: list.userName,
+    createdAt: list.createdAt,
+    updatedAt: list.updatedAt,
+    games: list.games || []
+  }));
+
+  console.log('fetchGamelists transformed data:', transformedData);
+  return transformedData;
+  
+}
+
+export const fetchGameListSingle = async ({ query, listId }: { query: string; listId: string }) => {
+  
+  const response = await fetch(`${API_BASE}/gamelists/${listId}`, {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' }, 
+})
+
+  if(!response.ok) {
+      throw new Error('Failed to fetch gamelists', response.statusText);
+  }
+
+const data = await response.json();
+  console.log('fetchGameListSingle raw data:', data);
+   
+  // For single list, backend returns a single object, not an array
+  const transformedData = {
+    listId: data.listId,
+    listTitle: data.listTitle,
+    userName: data.userName,
+    createdAt: data.createdAt,
+    updatedAt: data.updatedAt,
+    games: data.games || []
+  };
+
+  console.log('fetchGameListSingle transformed data:', transformedData);
+  return transformedData;
+  
+}
+
+export const fetchListsByUser = async ({ query, userId }: { query: string; userId: string }) => {
+  
+  const response = await fetch(`${API_BASE}/gamelists/user/${userId}`, {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' }, 
+})
+
+  if(!response.ok) {
+      throw new Error('Failed to fetch lists', response.statusText);
+  }
+
+const data = await response.json();
+
+  const transformedData = (data.gameLists || []).map(item => ({
+    userId: item.userId,
+    listId: item.listId,
+    listTitle: item.listTitle,
+  }));
+
+  return transformedData;
   
 }
