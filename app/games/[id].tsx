@@ -1,7 +1,8 @@
+import GameList from '@/components/GameList';
 import ReviewComponent from '@/components/ReviewComponent';
 import { icons } from '@/constants/icons';
 import { API_BASE } from '@/lib/appwrite';
-import { fetchGameDetails, fetchReviewsByGame } from '@/services/api';
+import { fetchGameDetails, fetchReviewsByGame, fetchListsByGame } from '@/services/api';
 import useFetch from '@/services/useFetch';
 import useAuthStore from '@/store/auth.store';
 import { router, useLocalSearchParams } from 'expo-router';
@@ -18,10 +19,20 @@ const GameDetails = () => {
   const gameIdStr = Array.isArray(id) ? id[0] : (id?.toString() || '');
   console.log('GameReviews - gameIdStr:', gameIdStr);
   
-  const { data: reviewsData, loading: reviewsLoading } = useFetch(
+const { data: reviewsData, loading: reviewsLoading } = useFetch(
     () => fetchReviewsByGame({ gameId: gameIdStr, query: '' }),
     !!gameIdStr
   );
+
+  // Get lists containing current game
+  const { data: listsData, loading: listsLoading } = useFetch(
+    () => fetchListsByGame({ gameId: gameIdStr, query: '' }),
+    !!gameIdStr
+  );
+
+  console.log('GameDetails - listsData:', listsData);
+  console.log('GameDetails - listsLoading:', listsLoading);
+  console.log('GameDetails - gameIdStr:', gameIdStr);
 
   const addToCollection = async () => {
     if (!game?.gameId) {
@@ -183,9 +194,36 @@ const GameDetails = () => {
             </View>
           )}
 
-          {activeTab === 'lists' && (
+{activeTab === 'lists' && (
             <View className="px-5 py-3">
-              <Text className="text-white">Lists coming soon...</Text>
+              {listsLoading ? (
+                <View className="flex-1 justify-center items-center py-8">
+                  <ActivityIndicator size="small" color="#fff" />
+                  <Text className="text-white mt-2">Loading lists...</Text>
+                </View>
+              ) : listsData && listsData.length > 0 ? (
+                <ScrollView 
+                  showsVerticalScrollIndicator={false}
+                  nestedScrollEnabled={true}
+                  style={{ maxHeight: 400 }}
+                >
+                  {listsData.map((list: any, index: number) => (
+                    <GameList
+                      key={list.listId || index}
+                      listId={list.listId}
+                      listTitle={list.listTitle}
+                      userName={list.userName}
+                      createdAt={list.createdAt}
+                      updatedAt={list.updatedAt}
+                      games={list.games}
+                    />
+                  ))}
+                </ScrollView>
+              ) : (
+                <View className="flex-1 justify-center items-center py-8">
+                  <Text className="text-gray-400 text-center">This game is not in any lists yet</Text>
+                </View>
+              )}
             </View>
           )}
         </View>

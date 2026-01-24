@@ -358,16 +358,16 @@ export const fetchGamelists = async ({ query }: { query: string }) => {
 
   
  
-  const transformedData = (data.gamelists || []).map((list: any, index: number) => ({
-    listId: list.listId,
-    listTitle: list.listTitle,
-    userName: list.userName,
-    createdAt: list.createdAt,
-    updatedAt: list.updatedAt,
-    games: list.games || []
-  }));
+const transformedData = (data.gamelists || []).map((list: any, index: number) => ({
+  listId: list.listId,
+  listTitle: list.listTitle,
+  userName: list.userName,
+  createdAt: list.createdAt || new Date().toISOString(),
+  updatedAt: list.updatedAt || new Date().toISOString(),
+  games: list.games || []
+}));
 
-  console.log('fetchGamelists transformed data:', transformedData);
+console.log('fetchListsByGame transformed data:', transformedData);
   return transformedData;
   
 }
@@ -426,6 +426,7 @@ const data = await response.json();
 
 export const fetchListsByGame = async ({ query, gameId }: { query: string; gameId: string }) => {
   
+  console.log('fetchListsByGame called with gameId:', gameId);
   const response = await fetch(`${API_BASE}/gamelists/game/${gameId}`, {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' }, 
@@ -436,14 +437,18 @@ export const fetchListsByGame = async ({ query, gameId }: { query: string; gameI
   }
 
 const data = await response.json();
+console.log('fetchListsByGame raw data:', data);
 
-  const transformedData = (data.gameLists || []).map(item => ({
-    userId: item.userId,
-    userName: item.userName,
-    listId: item.listId,
-    listTitle: item.listTitle,
-  }));
+const transformedData = (data.gameLists || []).map((list: any, index: number) => ({
+  listId: list.listId,
+  listTitle: list.listTitle,
+  userName: list.userName,
+  createdAt: list.createdAt,
+  updatedAt: list.updatedAt,
+  games: list.games || []
+}));
 
-  return transformedData;
+console.log('fetchGamelists transformed data:', transformedData);
+return transformedData;
   
 }
