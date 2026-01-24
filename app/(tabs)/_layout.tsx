@@ -92,7 +92,7 @@ const TabIcon = ({ focused, icon, title }: any) => {
                 tabBarIcon: ({ focused }) => (
                     <TabIcon 
                     focused={focused} 
-                    icon={icons.search}
+                    icon={icons.lists}
                     title="Lists"
                     />
                   )

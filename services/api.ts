@@ -423,3 +423,27 @@ const data = await response.json();
   return transformedData;
   
 }
+
+export const fetchListsByGame = async ({ query, gameId }: { query: string; gameId: string }) => {
+  
+  const response = await fetch(`${API_BASE}/gamelists/game/${gameId}`, {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' }, 
+})
+
+  if(!response.ok) {
+      throw new Error('Failed to fetch lists', response.statusText);
+  }
+
+const data = await response.json();
+
+  const transformedData = (data.gameLists || []).map(item => ({
+    userId: item.userId,
+    userName: item.userName,
+    listId: item.listId,
+    listTitle: item.listTitle,
+  }));
+
+  return transformedData;
+  
+}

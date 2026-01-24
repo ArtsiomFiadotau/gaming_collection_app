@@ -81,10 +81,10 @@ const GameDetails = () => {
             <Text className="text-white font-semibold text-center">Add to Collection</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity
+<TouchableOpacity
             className="flex-1 px-4 py-2 rounded-md bg-dark-100 items-center justify-center"
             onPress={() => {
-              Alert.alert('Info', 'Add to List — not implemented yet');
+              router.push(`/lists/listCreation?gameId=${game?.gameId}`);
             }}
           >
             <Text className="text-white font-semibold text-center">Add to List</Text>

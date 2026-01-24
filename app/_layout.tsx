@@ -59,5 +59,17 @@ export default function RootLayout() {
         headerShown: false 
       }}
     />
+    <Stack.Screen
+      name="lists/[listId]"
+      options={{ 
+        headerShown: false 
+      }}
+    />
+    <Stack.Screen
+      name="lists/listCreation"
+      options={{ 
+        headerShown: false 
+      }}
+    />
   </Stack>)
 }
