@@ -1,11 +1,11 @@
 import { API_BASE } from "@/lib/appwrite";
-import { fetchListsByUser, fetchGameDetails } from '@/services/api';
+import { fetchGameDetails, fetchListsByUser } from '@/services/api';
 import useFetch from '@/services/useFetch';
 import useAuthStore from '@/store/auth.store';
+import { router, useLocalSearchParams } from 'expo-router';
 import React from 'react';
 import { ActivityIndicator, Alert, Image, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useLocalSearchParams } from 'expo-router';
 
 const ListCreation = () => {
   const { gameId } = useLocalSearchParams();
@@ -144,7 +144,7 @@ const ListCreation = () => {
           <View className="mb-6">
             <TextInput
               className="bg-dark-100 text-white rounded-lg p-4 min-h-[100px] text-base"
-              placeholder="Enter game description..."
+              placeholder="Enter list title..."
               placeholderTextColor="#9ca3af"
               multiline
               maxLength={250}
@@ -210,6 +210,7 @@ const ListCreation = () => {
 
           {/* Кнопка "Go back" */}
           <TouchableOpacity 
+          onPress={() => router.replace('/')}
             className="bg-gray-700 rounded-lg py-3 px-6"
             style={{ alignSelf: 'flex-start' }}
           >

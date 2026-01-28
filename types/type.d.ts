@@ -34,7 +34,7 @@ interface TabBarIconProps {
 }
 
 
-interface CustomButtonProps {
+export interface CustomButtonProps {
     onPress?: () => void;
     title?: string;
     style?: string;
@@ -67,4 +67,13 @@ interface SignInParams {
 interface GetMenuParams {
     category: string;
     query: string;
+}
+
+interface CustomInputProps {
+    placeholder?: string;
+    value?: string;
+    onChangeText?: (text: string) => void;
+    label: string;
+    secureTextEntry?: boolean;
+    keyboardType?: "default" | "email-address" | "numeric" | "phone-pad";
 }

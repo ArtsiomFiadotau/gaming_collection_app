@@ -305,14 +305,15 @@ export const fetchReviewsByUser = async ({ query, userId }: { query: string; use
 
 const data = await response.json();
 
-  const transformedData = (data.reviews || []).map(item => ({
+const transformedData = (data.reviews || []).map(item => ({
+    reviewId: item.reviewId,
     userId: item.userId,
     gameId: item.gameId,
     userName: item.userName,
     title: item.title,
     reviewTitle: item.reviewTitle,
     reviewText: item.reviewText
-  }));
+}));
 
   return transformedData;
   
@@ -451,4 +452,49 @@ const transformedData = (data.gameLists || []).map((list: any, index: number) =>
 console.log('fetchGamelists transformed data:', transformedData);
 return transformedData;
   
+}
+
+export const deleteCollectionItem = async ({ userId, gameId }: { userId: string; gameId: string }) => {
+  const response = await fetch(`${API_BASE}/collectionitems`, {
+    method: 'DELETE',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      userId: userId,
+      gameId: gameId
+    })
+  });
+
+  if(!response.ok) {
+    throw new Error('Failed to delete collection item', response.statusText);
+  }
+
+  const data = await response.json();
+  return data;
+}
+
+
+export const patchReview = async ({ reviewId, reviewTitle, reviewText }: { reviewId: number; reviewTitle: string; reviewText: string}) => {
+  console.log('patchReview called with:', { reviewId, reviewTitle, reviewText });
+  console.log('Title length:', reviewTitle.length, 'Text length:', reviewText.length);
+  
+  const response = await fetch(`${API_BASE}/reviews/${reviewId}`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      reviewTitle: reviewTitle,
+      reviewText: reviewText
+    })
+  });
+
+  console.log('patchReview response status:', response.status);
+
+  if(!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    console.log('patchReview error response:', errorData);
+    throw new Error(`Failed to patch review: ${response.status} ${JSON.stringify(errorData)}`);
+  }
+
+  const data = await response.json();
+  console.log('patchReview success:', data);
+  return data;
 }

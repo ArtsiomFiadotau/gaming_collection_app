@@ -38,7 +38,7 @@ const GameList = ({ listId, listTitle, userName, games }: GameListProps) => {
         contentContainerStyle={{ paddingLeft: 0 }}
         className="mb-2"
       >
-        {games.map((game: any, index: number) => (
+        {(games || []).map((game: any, index: number) => (
           <View key={game.gameId} className="flex-col items-center mr-4">
             <Image
               source={{
@@ -51,7 +51,9 @@ const GameList = ({ listId, listTitle, userName, games }: GameListProps) => {
               resizeMode="cover"
               style={{ width: 80, height: 80 }}
             />
-            
+            <Text className="text-white text-xs mt-1 text-center w-20" numberOfLines={2}>
+              {game.title}
+            </Text>
           </View>
         ))}
       </ScrollView>

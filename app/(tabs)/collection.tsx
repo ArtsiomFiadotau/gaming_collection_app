@@ -54,6 +54,7 @@ return (
                     gameId={item.gameId}
                     title={item.title}
                     coverImage={item.coverImage}
+                    onDeleteSuccess={refetch}
                   />
                 )}
                 keyExtractor={(item) => item.gameId?.toString()}

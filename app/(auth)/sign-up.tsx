@@ -65,7 +65,7 @@ const SignUp = () => {
             />     
 
             <View className="flex justify-center mt-5 flex-row gap-2">
-              <Text className="base-regular" text-gray-100>
+              <Text className="base-regular text-gray-50">
                 Already have an account?
               </Text>
               <Link href="/sign-in" className='base-bold text-gray-200'>

@@ -2,7 +2,7 @@ import GameList from '@/components/GameList';
 import ReviewComponent from '@/components/ReviewComponent';
 import { icons } from '@/constants/icons';
 import { API_BASE } from '@/lib/appwrite';
-import { fetchGameDetails, fetchReviewsByGame, fetchListsByGame } from '@/services/api';
+import { fetchGameDetails, fetchListsByGame, fetchReviewsByGame } from '@/services/api';
 import useFetch from '@/services/useFetch';
 import useAuthStore from '@/store/auth.store';
 import { router, useLocalSearchParams } from 'expo-router';
@@ -93,7 +93,7 @@ const { data: reviewsData, loading: reviewsLoading } = useFetch(
           </TouchableOpacity>
 
 <TouchableOpacity
-            className="flex-1 px-4 py-2 rounded-md bg-dark-100 items-center justify-center"
+            className="flex-1 px-4 py-2 rounded-md bg-accent items-center justify-center"
             onPress={() => {
               router.push(`/lists/listCreation?gameId=${game?.gameId}`);
             }}
