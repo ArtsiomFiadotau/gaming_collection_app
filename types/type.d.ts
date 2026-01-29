@@ -64,11 +64,6 @@ interface SignInParams {
     password: string;
 }
 
-interface GetMenuParams {
-    category: string;
-    query: string;
-}
-
 interface CustomInputProps {
     placeholder?: string;
     value?: string;

@@ -4,7 +4,7 @@ import React from 'react';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
 
 const GameCard = ( {id, cover_url, name, rating, release_date}: Game) => {
-    //console.log(release_date);
+   
     return (
     <Link href={`/games/${id}`} asChild>
         <TouchableOpacity className="w-[30%]">

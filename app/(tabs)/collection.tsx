@@ -41,7 +41,7 @@ return (
                 color="#3b82f6"
                 className="mt-10 self-center"
                 />
-            ) : gamesError ? (
+            ) : gamesError && gamesError.message && !gamesError.message.includes('No data') ? (
               <Text className="text-white text-center mt-10">Error: {gamesError?.message}</Text>
             ) : !collectionitems || collectionitems.length === 0 ? (
               <Text className="text-gray-400 text-center mt-10">No items in collection</Text>

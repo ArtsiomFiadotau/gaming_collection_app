@@ -12,7 +12,7 @@ const CustomButton = ({
   isLoading = false
 }: CustomButtonProps) => {
   return (
-    <TouchableOpacity className={cn('custom-btn', style)} onPress={onPress}>
+    <TouchableOpacity className={cn('custom-btn bg-accent', style)} onPress={onPress}>
       {leftIcon}
 
       <View className="flex-center flex-row" style={undefined}>
@@ -24,7 +24,7 @@ const CustomButton = ({
           </Text>
         )}
       </View>
-      {/* Удалён лишний текстовый элемент: <Text>CustomButton</Text> */}
+      
     </TouchableOpacity>
   )
 }

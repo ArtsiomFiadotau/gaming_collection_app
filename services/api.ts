@@ -210,14 +210,16 @@ export const fetchCollectionItems = async ({ query, userId }: { query: string; u
   }
 
 const data = await response.json();
+  console.log('fetchCollectionItems raw data:', data);
 
-  const transformedData = (data.games || []).map(item => ({
+  const transformedData = (data.games || []).map(item =>({
     userId: item.userId,
     gameId: item.gameId,
     title: item.title,
     coverImage: item.coverImage
   }));
 
+  console.log('fetchCollectionItems transformed data:', transformedData);
   return transformedData;
   
 }
