@@ -4,7 +4,7 @@ import { signIn } from '@/lib/appwrite';
 import useAuthStore from '@/store/auth.store';
 import { Link, router } from 'expo-router';
 import React, { useState } from 'react';
-import { Alert, KeyboardAvoidingView, Platform, Text, View } from 'react-native';
+import { Alert, KeyboardAvoidingView, Text, View } from 'react-native';
 
 const SignIn = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -39,7 +39,7 @@ const SignIn = () => {
   
   return (
     <KeyboardAvoidingView 
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      //behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       className="flex-1 bg-primary"
     >
       <View className="gap-10 bg-primary rounded-lg p-5 mt-5 flex-1 justify-center">
